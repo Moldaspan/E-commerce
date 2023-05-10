@@ -1,5 +1,6 @@
 package main
 
+
 import (
 	"fmt"
 	"github.com/Moldaspan/E-commerce/backend/database"
@@ -11,7 +12,9 @@ import (
 )
 
 //
+func(){
 
+}
 const (
 	host   = "localhost"
 	port   = 5432
