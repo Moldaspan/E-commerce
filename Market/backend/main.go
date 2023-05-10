@@ -1,6 +1,6 @@
 package main
 
-//ckeeeodiompcuicdsomcds
+
 import (
 	"fmt"
 	"github.com/Moldaspan/Market/Market/backend/database"
@@ -12,7 +12,9 @@ import (
 )
 
 //
+func(){
 
+}
 const (
 	host   = "localhost"
 	port   = 5432
