@@ -1,5 +1,4 @@
 package main
-//ertuuuuuu
 
 import (
 	"fmt"
@@ -11,10 +10,6 @@ import (
 	"gorm.io/gorm"
 )
 
-//
-func(){
-
-}
 const (
 	host   = "localhost"
 	port   = 5432
