@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<h1>Login</h1>
+<div>
+    <form action="/login" method="post">
+        <div>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <input type="submit" value="Login">
+        {{if .ErrorMessage}}
+            <div class="alert alert-danger" role="alert">
+                {{.ErrorMessage}}
+            </div>
+        {{end}}
+    </form>
+
+</div>
+</body>
+</html>

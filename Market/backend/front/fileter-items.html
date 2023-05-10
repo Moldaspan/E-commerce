@@ -1,0 +1,21 @@
+<h2>Filtering by price</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th>Rating</th>
+  </tr>
+  </thead>
+  <tbody>
+  {{range .items}}
+    <tr>
+      <td>{{.Name}}</td>
+      <td>{{.Price}}</td>
+      <td>{{.Desciption}}</td>
+      <td>{{.Rating}}</td>
+    </tr>
+  {{end}}
+  </tbody>
+</table>
