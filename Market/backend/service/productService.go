@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/Moldaspan/Market/Market/backend/database"
-	"github.com/Moldaspan/Market/Market/backend/models"
+	"github.com/Moldaspan/E-commerce/backend/database"
+	"github.com/Moldaspan/E-commerce/backend/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/Moldaspan/Market/Market/backend/database"
-	"github.com/Moldaspan/Market/Market/backend/models"
-	"github.com/Moldaspan/Market/Market/backend/service"
+	"github.com/Moldaspan/E-commerce/backend/database"
+	"github.com/Moldaspan/E-commerce/backend/models"
+	"github.com/Moldaspan/E-commerce/backend/service"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
