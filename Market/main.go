@@ -1,10 +1,9 @@
 package main
 
 import (
-	"github.com/Moldaspan/E-commerce/orders"
-	"github.com/Moldaspan/E-commerce/products"
+	"github.com/Moldaspan/E-commerce/controllers"
+	"github.com/Moldaspan/E-commerce/models"
 	"github.com/Moldaspan/E-commerce/settings"
-	"github.com/Moldaspan/E-commerce/users"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	"log"
@@ -13,13 +12,13 @@ import (
 
 func main() {
 	router := gin.Default()
-	userController := users.NewUserController()
-	pc := products.NewProductController()
-	cc := products.NewCategoryController()
-	oc := orders.NewOrderController()
+	userController := controllers.NewUserController()
+	pc := controllers.NewProductController()
+	cc := controllers.NewCategoryController()
+	oc := controllers.NewOrderController()
 
 	db, _ := settings.DbSetup()
-	db.AutoMigrate(&users.User{}, &products.Product{}, &products.Category{}, &orders.Order{})
+	db.AutoMigrate(&models.User{}, &models.Product{}, &models.Category{}, &models.Order{})
 
 	router.POST("/users", userController.CreateUser)
 	router.GET("/users/:user_id", userController.GetUserById)
