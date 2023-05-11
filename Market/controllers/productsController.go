@@ -1,42 +1,42 @@
 package controllers
 
 import (
-	"github.com/Moldaspan/E-commerce/backend/models"
-	"github.com/Moldaspan/E-commerce/backend/service"
 	"github.com/gin-gonic/gin"
+	"math"
 	"net/http"
 	"strconv"
 )
 
 type ProductController struct {
-	productService service.ProductServiceInterface
+	productService ProductServiceInterface
 	//userService    users.UserServiceInterface
 }
 
 type CategoryController struct {
-	categoryService service.CategoryServiceInterface
+	categoryService CategoryServiceInterface
 }
 
 func NewProductController() *ProductController {
-	return &ProductController{productService: service.NewProductService()}
+	return &ProductController{productService: NewProductService()}
 }
 
 func NewCategoryController() *CategoryController {
-	return &CategoryController{categoryService: service.NewCategoryService()}
+	return &CategoryController{categoryService: NewCategoryService()}
 }
 
-//func (pc *ProductController) GetProductAverageRating(c *gin.Context) {
-//	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
-//	if err != nil {
-//		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid product ID"})
-//	}
-//	avgValue, err := pc.productService.GetProductAverageRating(uint(id)) netu etoi func
-//	if err != nil {
-//		c.JSON(http.StatusNotFound, gin.H{"error": "Product not found"})
-//	}
-//
-//	c.JSON(http.StatusOK, gin.H{"data": avgValue})
-//}
+func (pc *ProductController) GetProductAverageRating(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid product ID"})
+	}
+
+	avgValue, err := pc.productService.GetProductAverageRating(uint(id))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Product not found"})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": avgValue})
+}
 
 func (pc *ProductController) GetProducts(c *gin.Context) {
 	//productList := make([]Product, 0)
@@ -50,36 +50,36 @@ func (pc *ProductController) GetProducts(c *gin.Context) {
 	c.JSON(http.StatusOK, products)
 }
 
-//func (pc *ProductController) SearchByName(c *gin.Context) {
-//	title := c.Query("title")
-//	if title == "" {
-//		c.JSON(http.StatusBadRequest, gin.H{"error": "Name parameter is missing"})
-//		return
-//	}
-//	products, err := pc.productService.SearchByName(title) netu
-//	if err != nil {
-//		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to search for products"})
-//		return
-//	}
-//	c.JSON(http.StatusOK, products)
-//}
+func (pc *ProductController) SearchByName(c *gin.Context) {
+	title := c.Query("title")
+	if title == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Name parameter is missing"})
+		return
+	}
+	products, err := pc.productService.SearchByName(title)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to search for products"})
+		return
+	}
+	c.JSON(http.StatusOK, products)
+}
 
-//func (pc ProductController) SearchByPriceRange(c *gin.Context) {
-//	minPrice, err := strconv.ParseFloat(c.Query("min_price"), 64)
-//	if err != nil {
-//		minPrice = 0.0
-//	}
-//	maxPrice, err := strconv.ParseFloat(c.Query("max_price"), 64)
-//	if err != nil {
-//		maxPrice = math.MaxFloat64
-//	}
-//	products, err := pc.productService.SearchByPriceRange(minPrice, maxPrice) netu
-//	if err != nil {
-//		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to search for products"})
-//		return
-//	}
-//	c.JSON(http.StatusOK, products)
-//}
+func (pc ProductController) SearchByPriceRange(c *gin.Context) {
+	minPrice, err := strconv.ParseFloat(c.Query("min_price"), 64)
+	if err != nil {
+		minPrice = 0.0
+	}
+	maxPrice, err := strconv.ParseFloat(c.Query("max_price"), 64)
+	if err != nil {
+		maxPrice = math.MaxFloat64
+	}
+	products, err := pc.productService.SearchByPriceRange(minPrice, maxPrice)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to search for products"})
+		return
+	}
+	c.JSON(http.StatusOK, products)
+}
 
 func (pc ProductController) GetCommentsByProductId(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
@@ -97,13 +97,11 @@ func (pc ProductController) GetCommentsByProductId(c *gin.Context) {
 }
 
 func (pc ProductController) CreateProduct(c *gin.Context) {
-	var product models.Product
+	var product Product
 	if err := c.ShouldBindJSON(&product); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	//product.UserID = userID
 
 	if err := pc.productService.CreateProduct(&product); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -130,7 +128,7 @@ func (pc ProductController) GetProductByID(c *gin.Context) {
 }
 
 func (pc ProductController) UpdateProduct(c *gin.Context) {
-	var product models.Product
+	var product Product
 	if err := c.ShouldBindJSON(&product); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -160,7 +158,7 @@ func (pc ProductController) DeleteProduct(c *gin.Context) {
 }
 
 func (cc CategoryController) CreateCategory(c *gin.Context) {
-	var category models.Category
+	var category Category
 	if err := c.ShouldBindJSON(&category); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -191,7 +189,7 @@ func (cc CategoryController) GetCategoryByID(c *gin.Context) {
 }
 
 func (cc CategoryController) UpdateCategory(c *gin.Context) {
-	var category models.Category
+	var category Category
 	if err := c.ShouldBindJSON(&category); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
