@@ -1,21 +1,23 @@
 package controllers
 
 import (
+	"github.com/Moldaspan/E-commerce/models"
+	"github.com/Moldaspan/E-commerce/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
 type OrderController struct {
-	orderService OrderServiceInterface
+	orderService service.OrderServiceInterface
 }
 
 func NewOrderController() OrderController {
-	return OrderController{orderService: NewOrderService()}
+	return OrderController{orderService: service.NewOrderService()}
 }
 
 func (oc *OrderController) CreateOrder(c *gin.Context) {
-	order := &Order{}
+	order := &models.Order{}
 	if err := c.ShouldBindJSON(order); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -30,7 +32,7 @@ func (oc *OrderController) CreateOrder(c *gin.Context) {
 }
 
 func (oc *OrderController) UpdateOrder(c *gin.Context) {
-	order := &Order{}
+	order := &models.Order{}
 	if err := c.ShouldBindJSON(order); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

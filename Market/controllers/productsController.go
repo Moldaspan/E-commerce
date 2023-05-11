@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"github.com/Moldaspan/E-commerce/models"
+	"github.com/Moldaspan/E-commerce/service"
 	"github.com/gin-gonic/gin"
 	"math"
 	"net/http"
@@ -8,20 +10,20 @@ import (
 )
 
 type ProductController struct {
-	productService ProductServiceInterface
+	productService service.ProductServiceInterface
 	//userService    users.UserServiceInterface
 }
 
 type CategoryController struct {
-	categoryService CategoryServiceInterface
+	categoryService service.CategoryServiceInterface
 }
 
 func NewProductController() *ProductController {
-	return &ProductController{productService: NewProductService()}
+	return &ProductController{productService: service.NewProductService()}
 }
 
 func NewCategoryController() *CategoryController {
-	return &CategoryController{categoryService: NewCategoryService()}
+	return &CategoryController{categoryService: service.NewCategoryService()}
 }
 
 func (pc *ProductController) GetProductAverageRating(c *gin.Context) {
@@ -97,7 +99,7 @@ func (pc ProductController) GetCommentsByProductId(c *gin.Context) {
 }
 
 func (pc ProductController) CreateProduct(c *gin.Context) {
-	var product Product
+	var product models.Product
 	if err := c.ShouldBindJSON(&product); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -128,7 +130,7 @@ func (pc ProductController) GetProductByID(c *gin.Context) {
 }
 
 func (pc ProductController) UpdateProduct(c *gin.Context) {
-	var product Product
+	var product models.Product
 	if err := c.ShouldBindJSON(&product); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -158,7 +160,7 @@ func (pc ProductController) DeleteProduct(c *gin.Context) {
 }
 
 func (cc CategoryController) CreateCategory(c *gin.Context) {
-	var category Category
+	var category models.Category
 	if err := c.ShouldBindJSON(&category); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -189,7 +191,7 @@ func (cc CategoryController) GetCategoryByID(c *gin.Context) {
 }
 
 func (cc CategoryController) UpdateCategory(c *gin.Context) {
-	var category Category
+	var category models.Category
 	if err := c.ShouldBindJSON(&category); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

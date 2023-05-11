@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/Moldaspan/E-commerce/models"
 	"github.com/Moldaspan/E-commerce/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -12,11 +13,11 @@ type CommentController struct {
 }
 
 func NewCommentController() CommentController {
-	return CommentController{NewCommentService()}
+	return CommentController{service.NewCommentService()}
 }
 
 func (cc CommentController) CreateComment(c *gin.Context) {
-	var comment Comment
+	var comment models.Comment
 	if err := c.ShouldBindJSON(&comment); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

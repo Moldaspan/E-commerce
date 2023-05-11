@@ -1,22 +1,25 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/Moldaspan/E-commerce/models"
+	"github.com/Moldaspan/E-commerce/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
 type UserController struct {
-	userService UserServiceInterface
+	userService service.UserServiceInterface
 }
 
 func NewUserController() UserController {
-	return UserController{userService: NewUserService()}
+	return UserController{userService: service.NewUserService()}
 }
 
 func (u UserController) CreateUser(c *gin.Context) {
-	var user User
+	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
@@ -46,7 +49,7 @@ func (uc UserController) GetUserById(c *gin.Context) {
 }
 
 func (u UserController) LogIn(c *gin.Context) {
-	var user User
+	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	} else {
@@ -57,7 +60,7 @@ func (u UserController) LogIn(c *gin.Context) {
 			return
 		}
 
-		response := LoginResponse{
+		response := models.LoginResponse{
 			AccessToken:  access,
 			RefreshToken: refresh,
 		}

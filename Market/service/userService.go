@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/Moldaspan/E-commerce/models"
+	"github.com/Moldaspan/E-commerce/repositories"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 	"log"
@@ -28,25 +30,25 @@ func (e *InvalidCredentialsError) Error() string {
 var SECRET_KEY = os.Getenv("SECRET_KEY")
 
 type UserServiceInterface interface {
-	CreateUser(user *User) error
-	LogIn(user *User) (string, string, error)
-	GetUserByID(id uint) *User
+	CreateUser(user *models.User) error
+	LogIn(user *models.User) (string, string, error)
+	GetUserByID(id uint) *models.User
 }
 
 type UserServiceV1 struct {
-	userRepos UserReposInterface
+	userRepos repositories.UserReposInterface
 }
 
-func (u UserServiceV1) CreateUser(user *User) error {
+func (u UserServiceV1) CreateUser(user *models.User) error {
 	user.Password = HashPassword(user.Password)
 	return u.userRepos.CreateUser(user)
 }
 
-func (u UserServiceV1) GetUserByID(id uint) *User {
+func (u UserServiceV1) GetUserByID(id uint) *models.User {
 	return u.userRepos.GetUserByID(id)
 }
 
-func (u UserServiceV1) LogIn(user *User) (string, string, error) {
+func (u UserServiceV1) LogIn(user *models.User) (string, string, error) {
 	givenpwd := user.Password
 	user, err := u.userRepos.GetUser(user.Email)
 	if err != nil {
@@ -69,10 +71,10 @@ func (u UserServiceV1) LogIn(user *User) (string, string, error) {
 }
 
 func NewUserService() UserServiceV1 {
-	return UserServiceV1{userRepos: NewUserRepos()}
+	return UserServiceV1{userRepos: repositories.NewUserRepos()}
 }
 
-func TokenGenerator(user *User) (string, string, error) {
+func TokenGenerator(user *models.User) (string, string, error) {
 	claims := &SignedDetails{
 		Email:     user.Email,
 		FirstName: user.FirstName,

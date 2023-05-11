@@ -1,8 +1,11 @@
 package urls
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/Moldaspan/E-commerce/controllers"
+	"github.com/gin-gonic/gin"
+)
 
-func SetupRouter(pc *ProductController, cc *CategoryController) *gin.Engine {
+func SetupRouter(pc *controllers.ProductController, cc *controllers.CategoryController) *gin.Engine {
 	r := gin.Default()
 
 	// Products endpoints
