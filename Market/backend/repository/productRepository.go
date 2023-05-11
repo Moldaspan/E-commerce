@@ -13,15 +13,15 @@ func NewProductRepository(db *gorm.DB) *ProductRepository {
 	return &ProductRepository{db}
 }
 func (r *ProductRepository) GetProducts() []models.Product {
-	var books []models.Product
-	r.db.Find(&books)
-	return books
+	var products []models.Product
+	r.db.Find(&products)
+	return products
 }
 func (r *ProductRepository) GetProductByID(id int) (*models.Product, error) {
-	var book models.Product
-	err := r.db.Where("id = ?", id).First(&book).Error
+	var prod models.Product
+	err := r.db.Where("id = ?", id).First(&prod).Error
 	if err != nil {
 		return &models.Product{}, err
 	}
-	return &book, nil
+	return &prod, nil
 }
