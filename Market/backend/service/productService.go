@@ -1,44 +1,94 @@
 package service
 
-//func CreateProduct(c *gin.Context) {
-//	var product models.Product
-//	err := c.BindJSON(&product)
-//	if err != nil {
-//		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-//		return
-//	}
-//
-//	if err := database.Db.Create(&product).Error; err != nil {
-//		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-//		return
-//	}
-//
-//	c.JSON(http.StatusOK, gin.H{"data": product})
-//}
+import (
+	"github.com/Moldaspan/E-commerce/backend/models"
+	"github.com/Moldaspan/E-commerce/backend/repository"
+)
 
-//func FilterItemsHandler(c *gin.Context) {
-//	// Read the query parameters
-//	nameFilter := c.Query("name")
-//	categoryFilter := c.Query("category")
-//
-//	// Build the Gorm query
-//	query := database.Db.Model(&models.Product{})
-//
-//	if nameFilter != "" {
-//		query = query.Where("name LIKE ?", "%"+nameFilter+"%")
-//	}
-//
-//	if categoryFilter != "" {
-//		query = query.Where("category = ?", categoryFilter)
-//	}
-//
-//	// Retrieve the filtered items from the database
-//	var items []models.Product
-//	if err := query.Find(&items).Error; err != nil {
-//		c.AbortWithStatus(http.StatusInternalServerError)
-//		return
-//	}
-//
-//	// Return the filtered items as a JSON response
-//	c.JSON(http.StatusOK, items)
-//}
+type ProductServiceInterface interface {
+	CreateProduct(*models.Product) error
+	GetProductByID(uint) (*models.Product, error)
+	UpdateProduct(*models.Product) error
+	DeleteProduct(uint) error
+	GetProducts() ([]models.Product, error)
+	GetCommentsByProductId(uint) ([]*models.Comment, error)
+}
+
+type CategoryServiceInterface interface {
+	CreateCategory(category *models.Category) error
+	GetCategoryByID(uint) (*models.Category, error)
+	UpdateCategory(*models.Category) error
+	DeleteCategory(uint) error
+	GetCategories() ([]models.Category, error)
+}
+
+type ProductServiceV1 struct {
+	productRepos repository.ProductRepositoryInterface
+}
+
+type CategoryServiceV1 struct {
+	categoryRepos repository.CategoryRepositoryInterface
+}
+
+func NewCategoryService() *CategoryServiceV1 {
+	return &CategoryServiceV1{categoryRepos: repository.NewCategoryRepository()}
+}
+
+func NewProductService() *ProductServiceV1 {
+	return &ProductServiceV1{productRepos: repository.NewProductRepository()}
+}
+
+func (p ProductServiceV1) GetProductAverageRating(id uint) (float32, error) {
+	return p.productRepos.GetProductAverageRating(id)
+}
+
+func (p ProductServiceV1) GetProducts() ([]models.Product, error) {
+	return p.productRepos.GetProducts()
+}
+func (p ProductServiceV1) SearchByName(title string) ([]models.Product, error) {
+	return p.productRepos.SearchByName(title)
+}
+
+func (p ProductServiceV1) SearchByPriceRange(minPrice, maxPrice float64) ([]models.Product, error) {
+	return p.productRepos.SearchByPriceRange(minPrice, maxPrice)
+}
+
+func (p ProductServiceV1) GetCommentsByProductId(id uint) ([]*models.Comment, error) {
+	return p.productRepos.GetCommentsByProductId(id)
+}
+
+func (p ProductServiceV1) CreateProduct(product *models.Product) error {
+	return p.productRepos.CreateProduct(product)
+}
+
+func (p ProductServiceV1) GetProductByID(id uint) (*models.Product, error) {
+	return p.productRepos.GetProductByID(id)
+}
+
+func (p ProductServiceV1) UpdateProduct(product *models.Product) error {
+	return p.productRepos.UpdateProduct(product)
+}
+
+func (p ProductServiceV1) DeleteProduct(id uint) error {
+	return p.productRepos.DeleteProduct(id)
+}
+
+func (c CategoryServiceV1) CreateCategory(category *models.Category) error {
+	return c.categoryRepos.CreateCategory(category)
+}
+
+func (c CategoryServiceV1) GetCategoryByID(id uint) (*models.Category, error) {
+	return c.categoryRepos.GetCategoryByID(id)
+}
+
+func (c CategoryServiceV1) UpdateCategory(category *models.Category) error {
+	return c.categoryRepos.UpdateCategory(category)
+}
+
+func (c CategoryServiceV1) DeleteCategory(id uint) error {
+	return c.categoryRepos.DeleteCategory(id)
+}
+
+func (c CategoryServiceV1) GetCategories() ([]models.Category, error) {
+	return c.categoryRepos.GetCategories()
+}
